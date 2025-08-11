@@ -1,56 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="8dp">
 
+    <!-- Верхние 40% - круг с азимутом -->
     <tech.airobotics.dd_receiver.common.CircleWithRadiusView
-        android:id="@+id/circleView"
-        android:layout_width="0dp"
+        android:id="@+id/azimuthView"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/centerVertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_weight="0.4"/>
 
+    <!-- Средние 40% - список объектов -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/objectsList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:layout_marginTop="8dp"
+        android:scrollbars="vertical"/>
+
+    <!-- Нижние 20% - форма ввода -->
     <LinearLayout
-        android:id="@+id/controlsLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
 
         <EditText
-            android:id="@+id/angleInput"
-            android:layout_width="match_parent"
+            android:id="@+id/azimuthInput"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Введите угол (0-360)"
-            android:inputType="numberDecimal" />
+            android:layout_weight="1"
+            android:hint="Азимут"
+            android:inputType="numberDecimal"/>
+
+        <EditText
+            android:id="@+id/distanceInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Расстояние"
+            android:inputType="numberDecimal"
+            android:layout_marginLeft="8dp"/>
+
+        <EditText
+            android:id="@+id/heightInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Высота"
+            android:inputType="numberDecimal"
+            android:layout_marginLeft="8dp"/>
 
         <Button
-            android:id="@+id/drawButton"
-            android:layout_width="match_parent"
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Нарисовать радиус"
-            android:layout_marginTop="8dp" />
-
-        <Button
-            android:id="@+id/cleanButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Очистить"
-            android:layout_marginTop="8dp" />
+            android:text="Отправить"
+            android:layout_marginLeft="8dp"/>
     </LinearLayout>
-
-    <View
-        android:id="@+id/centerVertical"
-        android:layout_width="409dp"
-        android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
