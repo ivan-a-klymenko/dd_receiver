@@ -22,4 +22,13 @@
         android:name="tech.airobotics.dd_receiver.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/circleFragment"
+        android:name="tech.airobotics.dd_receiver.ui.circle.CircleFragment"
+        android:label="CircleFragment" />
+    <fragment
+        android:id="@+id/polarCircleFragment"
+        android:name="tech.airobotics.dd_receiver.ui.polar_circle.PolarCircleFragment"
+        android:label="PolarCircleFragment" />
 </navigation>

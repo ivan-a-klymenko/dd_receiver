@@ -143,7 +143,7 @@ class HomeFragment : Fragment() {
         requireActivity().runOnUiThread {
             Toast.makeText(
                 requireContext(),
-                "BTServer received command: $command",
+                command,
                 Toast.LENGTH_SHORT
             ).show()
         }
