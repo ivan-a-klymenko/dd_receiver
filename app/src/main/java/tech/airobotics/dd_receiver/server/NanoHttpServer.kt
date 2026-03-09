@@ -14,7 +14,7 @@ import tech.airobotics.dd_receiver.repository.MessageRepository
 class NanoHttpServer(
     private val repo: MessageRepository,
     private val port: Int = 8080,
-    private val bindAddress: String = "127.0.0.1",
+    private val bindAddress: String = "0.0.0.0",
     private val coroutineScope: CoroutineScope
 ) : NanoHTTPD(bindAddress, port) {
 
