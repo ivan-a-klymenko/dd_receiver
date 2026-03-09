@@ -13,6 +13,14 @@ lifecycleViewmodelKtx = "2.9.2"
 navigationFragmentKtx = "2.9.2"
 navigationUiKtx = "2.9.2"
 
+# added
+nanohttpd = "2.3.1"
+okhttp = "4.11.0"
+coroutines = "1.7.3"
+coroutinesAndroid = "1.7.3"
+serialization = "1.6.0"
+turbine = "0.12.1"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -26,7 +34,14 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
+# added libraries
+nanohttpd = { group = "org.nanohttpd", name = "nanohttpd", version.ref = "nanohttpd" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesAndroid" }
+serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+appcash-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-

@@ -48,7 +48,16 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    // added
+    implementation(libs.nanohttpd)
+    implementation(libs.okhttp)
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+    implementation(libs.serialization.json)
+
     testImplementation(libs.junit)
+    testImplementation(libs.appcash.turbine)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

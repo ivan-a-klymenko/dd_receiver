@@ -31,4 +31,12 @@
         android:id="@+id/polarCircleFragment"
         android:name="tech.airobotics.dd_receiver.ui.polar_circle.PolarCircleFragment"
         android:label="PolarCircleFragment" />
+
+    <!-- Server fragment -->
+    <fragment
+        android:id="@+id/serverFragment"
+        android:name="tech.airobotics.dd_receiver.ui.server.ServerFragment"
+        android:label="@string/title_server"
+        tools:layout="@layout/fragment_server" />
+
 </navigation>
