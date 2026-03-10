@@ -3,12 +3,13 @@ package tech.airobotics.dd_receiver.server
 import android.util.Log
 import fi.iki.elonen.NanoHTTPD
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.json.JSONObject
 import tech.airobotics.dd_receiver.model.HttpMessage
 import tech.airobotics.dd_receiver.repository.MessageRepository
 
@@ -68,19 +69,33 @@ class NanoHttpServer(
 
                     val withIp = msg.copy(sourceIp = session.remoteIpAddress)
 
-                    coroutineScope.launch {
-                        try {
+                    try {
+                        runBlocking {
                             repo.save(withIp)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "repo.save error", e)
                         }
-                    }
 
-                    return newFixedLengthResponse(
-                        Response.Status.OK,
-                        "application/json",
-                        "{\"status\":\"ok\"}"
-                    )
+                        val ack = JSONObject()
+                        ack.put("status", "ok")
+                        ack.put("id", id)
+
+                        return newFixedLengthResponse(
+                            Response.Status.OK,
+                            "application/json",
+                            ack.toString()
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "repo.save error", e)
+
+                        val ack = JSONObject()
+                        ack.put("status", "error")
+                        ack.put("id", id)
+
+                        return newFixedLengthResponse(
+                            Response.Status.INTERNAL_ERROR,
+                            "application/json",
+                            ack.toString()
+                        )
+                    }
                 } catch (e: Exception) {
                     Log.e(TAG, "json parse error", e)
                     return newFixedLengthResponse(
@@ -99,10 +114,18 @@ class NanoHttpServer(
                 )
             }
 
-            return newFixedLengthResponse(Response.Status.NOT_FOUND, "text/plain", "not found")
+            return newFixedLengthResponse(
+                Response.Status.NOT_FOUND,
+                "text/plain",
+                "not found"
+            )
         } catch (e: Exception) {
             Log.e(TAG, "serve exception", e)
-            return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/plain", "error")
+            return newFixedLengthResponse(
+                Response.Status.INTERNAL_ERROR,
+                "text/plain",
+                "error"
+            )
         }
     }
 }
