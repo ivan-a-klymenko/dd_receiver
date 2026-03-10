@@ -110,9 +110,9 @@ class LocalHttpService : Service() {
 
         serviceScope.launch {
             try {
-                server = NanoHttpServer(repo, 8080, "127.0.0.1", serviceScope)
+                server = NanoHttpServer(repo, 8080, "0.0.0.0", serviceScope)
                 server?.start()
-                Log.i(TAG, "server started on 127.0.0.1:8080")
+                Log.i(TAG, "server started on 0.0.0.0:8080")
             } catch (e: Exception) {
                 Log.e(TAG, "server start error", e)
                 // если старт сервера упал — убираем foreground и останавливаем сервис
