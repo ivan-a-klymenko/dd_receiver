@@ -5,6 +5,7 @@ import fi.iki.elonen.NanoHTTPD
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -25,9 +26,11 @@ class NanoHttpServer(
             val uri = session.uri
             val method = session.method
             Log.d(TAG, "serve: method=$method uri=$uri remote=${session.remoteIpAddress}")
+
             if (method == Method.POST && uri == "/report") {
                 val contentLength = session.headers["content-length"]?.toIntOrNull() ?: -1
                 val input = session.inputStream
+
                 val body = if (contentLength >= 0) {
                     val buf = ByteArray(contentLength)
                     var read = 0
@@ -42,6 +45,7 @@ class NanoHttpServer(
                 }
 
                 Log.d(TAG, "body: $body")
+
                 try {
                     val je = Json.parseToJsonElement(body).jsonObject
 
@@ -53,11 +57,7 @@ class NanoHttpServer(
                     val timestamp = je["timestamp"]?.jsonPrimitive?.contentOrNull?.toLongOrNull()
                         ?: System.currentTimeMillis()
 
-                    val payload = mutableMapOf<String, String>()
-                    val payloadObj = je["payload"]?.jsonObject
-                    payloadObj?.forEach { (k, v) ->
-                        payload[k] = v.jsonPrimitive.contentOrNull ?: ""
-                    }
+                    val payload = je["payload"]?.jsonObject ?: buildJsonObject { }
 
                     val msg = HttpMessage(
                         id = id,
@@ -75,6 +75,7 @@ class NanoHttpServer(
                             Log.e(TAG, "repo.save error", e)
                         }
                     }
+
                     return newFixedLengthResponse(
                         Response.Status.OK,
                         "application/json",

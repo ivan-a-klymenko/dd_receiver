@@ -1,9 +1,11 @@
 package tech.airobotics.dd_receiver.model
 
+import kotlinx.serialization.json.JsonObject
+
 data class HttpMessage(
-    val id: String,                       // уникальный ID сообщения
-    val clientId: String? = null,        // постоянный ID клиента
+    val id: String,
+    val clientId: String? = null,
     val timestamp: Long,
-    val payload: Map<String, String>,
+    val payload: JsonObject,
     val sourceIp: String? = null
 )
