@@ -44,18 +44,30 @@ class NanoHttpServer(
                 Log.d(TAG, "body: $body")
                 try {
                     val je = Json.parseToJsonElement(body).jsonObject
-                    val id = je["id"]?.jsonPrimitive?.contentOrNull ?: java.util.UUID.randomUUID()
-                        .toString()
+
+                    val id = je["id"]?.jsonPrimitive?.contentOrNull
+                        ?: java.util.UUID.randomUUID().toString()
+
+                    val clientId = je["clientId"]?.jsonPrimitive?.contentOrNull
+
                     val timestamp = je["timestamp"]?.jsonPrimitive?.contentOrNull?.toLongOrNull()
                         ?: System.currentTimeMillis()
+
                     val payload = mutableMapOf<String, String>()
                     val payloadObj = je["payload"]?.jsonObject
                     payloadObj?.forEach { (k, v) ->
                         payload[k] = v.jsonPrimitive.contentOrNull ?: ""
                     }
-                    val msg = HttpMessage(id = id, timestamp = timestamp, payload = payload)
+
+                    val msg = HttpMessage(
+                        id = id,
+                        clientId = clientId,
+                        timestamp = timestamp,
+                        payload = payload
+                    )
+
                     val withIp = msg.copy(sourceIp = session.remoteIpAddress)
-                    // save using provided scope
+
                     coroutineScope.launch {
                         try {
                             repo.save(withIp)

@@ -23,7 +23,7 @@ class LocalHttpService : Service() {
     private var server: NanoHttpServer? = null
     private val repo = InMemoryMessageRepository()
     private val serviceScope = CoroutineScope(Dispatchers.IO + Job())
-    private val seenIds = mutableSetOf<String>()
+    private val seenMessageIds = mutableSetOf<String>()
 
     companion object {
         const val CHANNEL_ID = "local_http_server_channel"
@@ -43,7 +43,7 @@ class LocalHttpService : Service() {
             try {
                 repo.observeAll().collect { list ->
                     for (msg in list) {
-                        if (seenIds.add(msg.id)) {
+                        if (seenMessageIds.add(msg.id)) {
                             ServerStoreProvider.store.dispatch(ServerIntent.ReceivedMessage(msg))
                         }
                     }
