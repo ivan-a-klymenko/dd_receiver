@@ -100,11 +100,23 @@ class ServerFragment : Fragment() {
             }
         }
 
+        binding.btnClearPayload.setOnClickListener {
+            try {
+                binding.tvPayload.text = "Payload: "
+                viewModel.dispatch(ServerIntent.ClearMessages)
+            } catch (e: Exception) {
+                Log.e(TAG, "clear payload failed", e)
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.tvStatus.text =
                     if (state.isRunning) "Status: running" else "Status: stopped"
                 adapter.submitList(state.messages)
+                // показать payload последнего сообщения (если есть)
+                val last = state.messages.firstOrNull()
+                binding.tvPayload.text = last?.payload?.toString() ?: "Payload: "
             }
         }
     }

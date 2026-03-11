@@ -110,7 +110,25 @@ class LocalHttpService : Service() {
 
         serviceScope.launch {
             try {
-                server = NanoHttpServer(repo, 8080, "0.0.0.0", serviceScope)
+                server =
+                    NanoHttpServer(repo, 8080, "0.0.0.0", serviceScope) { method, uri, payload ->
+                        // Показываем toast на UI-потоке
+                        try {
+                            android.os.Handler(android.os.Looper.getMainLooper()).post {
+                                try {
+                                    val text = if (!payload.isNullOrEmpty()) {
+                                        "HTTP: $method $uri -> ${payload.take(200)}"
+                                    } else {
+                                        "HTTP: $method $uri"
+                                    }
+                                    Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT)
+                                        .show()
+                                } catch (_: Exception) {
+                                }
+                            }
+                        } catch (_: Exception) {
+                        }
+                    }
                 server?.start()
                 Log.i(TAG, "server started on 0.0.0.0:8080")
             } catch (e: Exception) {

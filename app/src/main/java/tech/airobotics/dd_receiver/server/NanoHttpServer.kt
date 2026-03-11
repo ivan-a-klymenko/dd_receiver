@@ -17,7 +17,9 @@ class NanoHttpServer(
     private val repo: MessageRepository,
     private val port: Int = 8080,
     private val bindAddress: String = "0.0.0.0",
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    // callback для индикации запросов (method, uri, payloadText)
+    private val onRequest: ((method: String, uri: String, payload: String?) -> Unit)? = null
 ) : NanoHTTPD(bindAddress, port) {
 
     private val TAG = "NanoHttpServer"
@@ -27,6 +29,10 @@ class NanoHttpServer(
             val uri = session.uri
             val method = session.method
             Log.d(TAG, "serve: method=$method uri=$uri remote=${session.remoteIpAddress}")
+
+            // уведомить о полученном запросе (payload может быть null для GET)
+            // при POST /report ниже мы передадим тело, если оно есть
+            onRequest?.invoke(method.name, uri, null)
 
             if (method == Method.POST && uri == "/report") {
                 val contentLength = session.headers["content-length"]?.toIntOrNull() ?: -1
@@ -46,6 +52,9 @@ class NanoHttpServer(
                 }
 
                 Log.d(TAG, "body: $body")
+
+                // дополнительно уведомляем с телом запроса
+                onRequest?.invoke(method.name, uri, body)
 
                 try {
                     val je = Json.parseToJsonElement(body).jsonObject

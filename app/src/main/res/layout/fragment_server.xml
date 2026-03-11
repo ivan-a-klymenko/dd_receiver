@@ -34,6 +34,21 @@
         android:paddingTop="8dp"
         android:text="Status: stopped" />
 
+    <Button
+        android:id="@+id/btn_clear_payload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Clear payload" />
+
+    <!-- Кнопка очистки payload -->
+    <TextView
+        android:id="@+id/tv_payload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Payload: " />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_messages"
         android:layout_width="match_parent"
